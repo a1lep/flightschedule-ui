@@ -22,9 +22,7 @@
                     <td>{{ flight.flightDuration }}</td>
                     <td>{{ flight.price }}</td>
                     <td>
-                        <div>
-                            <button>Select</button>
-                        </div>
+                        <button @click="getSeatMap(flight.id)">Select</button>
                     </td>
                 </tr>
             </tbody>
@@ -53,7 +51,10 @@ methods: {
             .catch((error) => {
             console.error("Error fetching all flights", error);
           });
-    }
+    },
+    getSeatMap(flightId) {
+        this.$router.push({ name: 'Seats', query: { flightId }});
+    },
 },
 mounted() {
     this.fetchFlights();
