@@ -47,26 +47,28 @@
 <script>
 import instance from '@/axiosConfig';
 
-
 export default {
+
     data() {
         return {
             api: "http://localhost:8080/api/flights/",
             allFlights: [],
-      originFlights: [],
-      dateFlights: [],
-      selectedDate: this.getCurrentDate(),
-        }
-    },
+            originFlights: [],
+            dateFlights: [],
+            selectedDate: this.getCurrentDate(),
+           }
+      },
+
 methods: {
-    getCurrentDate() {
-            const today = new Date();
-            const year = today.getFullYear();
-            const month = String(today.getMonth() + 1).padStart(2, '0'); 
-            const day = String(today.getDate()).padStart(2, '0'); 
-            return `${year}-${month}-${day}`;
+
+  getCurrentDate() {
+          const today = new Date();
+          const year = today.getFullYear();
+          const month = String(today.getMonth() + 1).padStart(2, '0'); 
+          const day = String(today.getDate()).padStart(2, '0'); 
+          return `${year}-${month}-${day}`;
         },
-    fetchFlightByDuration(minDuration, maxDuration) {
+  fetchFlightByDuration(minDuration, maxDuration) {
         instance
         .get(`${this.api}flightByDuration/${minDuration}/${maxDuration}`)
         .then((res) => {
@@ -76,9 +78,9 @@ methods: {
             console.error("Error fetching flights by duration:", error);
           });
     },
-    findFlightByDuration() {
-    const value = document.getElementById("durationSelect").value.trim();
 
+  findFlightByDuration() {
+    const value = document.getElementById("durationSelect").value.trim();
     let minDuration, maxDuration;
 
     if (value === "0-3") {
@@ -100,7 +102,7 @@ methods: {
     this.fetchFlightByDuration(minDuration, maxDuration);
     },
 
-    fetchFlightByOriginDestination(origin,destination) {
+  fetchFlightByOriginDestination(origin,destination) {
         instance
         .get(`${this.api}flightByOriginDestination/${origin}/${destination}`)
         .then((res) => {
@@ -110,12 +112,14 @@ methods: {
             console.error("Error fetching flights by duration:", error);
           });
     },
-    findFlightByOriginDestination() {
+
+  findFlightByOriginDestination() {
         const origin = document.getElementById("origin").value.trim();
         const destination = document.getElementById("destination").value.trim();
         this.fetchFlightByOriginDestination(origin,destination);
     },
-    fetchFlightsByDate(date) {
+
+  fetchFlightsByDate(date) {
       instance
         .get(`${this.api}flightByDate/${date}`)
         .then((res) => {
@@ -126,7 +130,8 @@ methods: {
           console.error("Error fetching flights by date:", error);
         });
     },
-    fetchFlightByPriceRange(minPrice, maxPrice) {
+
+  fetchFlightByPriceRange(minPrice, maxPrice) {
       instance
         .get(`${this.api}flightByPrice/${minPrice}/${maxPrice}`)
         .then((res) => {
@@ -136,10 +141,9 @@ methods: {
           console.error("Error fetching flights by price range:", error);
         });
     },
-    findFlightByPriceRange() {
 
+  findFlightByPriceRange() {
       const value = document.querySelector("#priceSelect").value.trim();
-      console.log(value)
       let minPrice, maxPrice;
 
       if (value === "0-100") {
@@ -153,14 +157,15 @@ methods: {
         maxPrice = 600;
       } else if (value === "600+") {
         minPrice = 600;
-        maxPrice = 1000;
+        maxPrice = 1500;
       } else {
         return;
       }
 
       this.fetchFlightByPriceRange(minPrice, maxPrice);
     },
-    matchFlights() {
+
+  matchFlights() {
         const matchedFlights = this.originFlights.filter((originFlight) => {
             return this.dateFlights.some((dateFlight) => {
                 return (
@@ -171,11 +176,11 @@ methods: {
                 );
             });
         });
-
         this.allFlights = matchedFlights;
         this.$emit("update-flights", this.allFlights);
     },
-    searchFlights() {
+
+  searchFlights() {
       const origin = document.getElementById("origin").value.trim();
       const destination = document.getElementById("destination").value.trim();
       const date = this.selectedDate;
@@ -187,12 +192,28 @@ methods: {
         console.error("Please fill in all fields (origin, destination, and date).");
       }
     },
-    clearFields() {
+
+  fetchAllFlights() {
+      instance.get(`${this.api}allFlights`)
+        .then((res) => {
+          this.$emit("update-flights", res.data);
+          })
+        .catch((error) => {
+          console.error("Error fetching all flights:", error);
+          });
+        },
+
+  clearFields() {
       document.getElementById("priceSelect").value = "";
       document.getElementById("durationSelect").value = "";
+      this.selectedDate = this.getCurrentDate();
       document.getElementById("origin").value = "";
       document.getElementById("destination").value = "";
-      this.$emit("reset-allFlights");
+      this.fetchAllFlights();
+      }
+    },
+  mounted() {
+      this.fetchAllFlights();
     }
-}}
+}
 </script>

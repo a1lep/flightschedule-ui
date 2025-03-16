@@ -28,6 +28,8 @@
                             <option>2</option>
                             <option>3</option>
                             <option>4</option>
+                            <option>5</option>
+                            <option>6</option>
                         </select>
                     </td>
                     <td class="table-cell">
@@ -41,17 +43,20 @@
 
 <script>
 export default {
+
     props: {
         allFlights: {
             type: Array,
             required: true,
         },
     },
+
     data() {
         return {
             selectedSeats: {},
         };
     },
+    
     methods: {
         formatTime(time) {
             if (!time) return '';
@@ -63,9 +68,9 @@ export default {
             return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getFullYear()}`;
         },
         getSeatMap(flightId) {
-            const numberOFSeats = this.selectedSeats[flightId];
-            if (numberOFSeats) {
-                this.$router.push({ name: 'Seats', query: { flightId, numberOFSeats } });
+            const numberOfSeats = this.selectedSeats[flightId];
+            if (numberOfSeats) {
+                this.$router.push({ name: 'Seats', query: { flightId, numberOfSeats } });
             } else {
                 alert('Please select the number of seats');
             }
