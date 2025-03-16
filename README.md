@@ -4,6 +4,8 @@ This project is a front-end application developed in Vue.js for managing flight 
 
 The UI is designed with a single CSS class that manages styles for flights and seats. While the project has room for improvement in terms of design and functionality, it was developed within a limited timeframe and with a focus on core features.
 
+Front-end is running on localhost:3000.
+
 ## Backend Dependency
 In order for the UI to work, the backend service must be running, you can find the repository here: 
 https://github.com/a1lep/flightschedule
