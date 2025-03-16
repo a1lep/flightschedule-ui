@@ -1,3 +1,5 @@
+/*SEATMAP CSS */
+
 .seat-map {
     text-align: center;
     font-family: Arial, sans-serif;
@@ -17,6 +19,13 @@
     align-items: center;
     gap: 5px;
   }
+
+  .legend .seat {
+    width: 30px;
+    height: 30px;
+    border-radius: 4px;
+    display: inline-block;
+}
 
 .seat-container {
     display: flex;
@@ -54,45 +63,52 @@
     transition: transform 0.2s ease;
 }
 
-.seat:hover {
-    transform: scale(1.1);
-}
-
-.available {
-    background-color: lightgreen;
+.economy {
+    background-color: rgb(144, 204, 144);
 }
 
 .extra-legroom {
-    background-color: yellow;
+    border: 2px solid #FFD700;
 }
 
 .window {
-    border: 3px solid blue;
+    border: 2px solid #0000FF;
 }
 
 .exit {
-    background-color: orange;
+    border: 2px solid #FF6347;
 }
 
 .sold {
-    background-color: lightgray;
+    background-color: rgb(178, 174, 174);
     cursor: not-allowed;
 }
 
+.first {
+    background-color: rgb(138, 143, 235);
+}
+
+.business {
+    background-color: antiquewhite;
+}
+.recommended {
+    background-color: gold;
+    border-radius: 4px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid gold;
+}
 
 .seat-row:nth-child(1) .seat {
     width: 50px; 
     height: 50px;
-    background-color: #FFD700;
     margin-left: 23px;
     margin-right: 23px;
 }
 
-
 .seat-row:nth-child(n+2):nth-child(-n+5) .seat {
     width: 50px; 
     height: 50px;
-    background-color: #B0E0E6;
     margin-left: 23px;
     margin-right: 23px;
 }
@@ -100,7 +116,6 @@
 .seat-row:nth-child(n+6) .seat {
     width: 45px; 
     height: 45px;
-    background-color: lightgray;
 }
 
 .seat:nth-child(3) {
@@ -111,3 +126,129 @@
     margin-left: 20px;
 }
 
+.seat-row:nth-child(10) {
+    position: relative;
+    margin-bottom: 35px;
+}
+
+/*FLIGHT TABLE CSS*/
+
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    margin: 20px 0;
+}
+
+.flight-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #ddd;
+    font-family: Arial, sans-serif;
+    margin-bottom: 20px;
+}
+
+.table-header {
+    background-color: #c69b9b;
+    color: white;
+    text-align: left;
+    padding: 12px;
+    font-weight: bold;
+}
+
+.table-row:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.table-row:hover {
+    background-color: #ddd;
+}
+
+.table-cell {
+    padding: 12px;
+    border: 1px solid #ddd;
+    text-align: left;
+}
+
+.amount-select {
+    width: 100%;
+    padding: 5px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: #fff;
+}
+
+.select-button {
+    padding: 14px 30px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    
+}
+/* SEARCH CONTAINER */
+
+.search-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 20px auto;
+}
+
+.search-input {
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 250px;
+}
+
+.search-button {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    
+}
+
+.search-button:hover {
+    background-color: #1b411d;
+}
+
+.filter-container {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    margin-top: 10px;
+    gap: 15px;
+}
+
+
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .search-input,
+    .filter-select {
+        width: 100%;
+        max-width: none;
+    }
+
+    .search-button {
+        width: 100%;
+    }
+}

@@ -1,63 +1,75 @@
 <template>
-    <div>
-        <table>
+    <div class="table-container">
+        <table class="flight-table">
             <thead>
                 <tr>
-                    <th>Flight number</th>
-                    <th>Origin</th>
-                    <th>Destination</th>
-                    <th>Date</th>
-                    <th>Time</th>
-                    <th>Duration</th>
-                    <th>Price</th>
+                    <th class="table-header">Flight number</th>
+                    <th class="table-header">Origin</th>
+                    <th class="table-header">Destination</th>
+                    <th class="table-header">Date</th>
+                    <th class="table-header">Time</th>
+                    <th class="table-header">Duration</th>
+                    <th class="table-header">Price</th>
+                    <th class="table-header">Amount</th>
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="flight in allFlights" :key="flight.id">
-                    <td>{{ flight.flightNumber }}</td>
-                    <td>{{ flight.origin }}</td>
-                    <td>{{ flight.destination }}</td>
-                    <td>{{ flight.departureDate }}</td>
-                    <td>{{ flight.departureTime }}</td>
-                    <td>{{ flight.flightDuration }}</td>
-                    <td>{{ flight.price }}</td>
-                    <td>
+                <tr v-for="flight in allFlights" :key="flight.id" class="table-row">
+                    <td class="table-cell">{{ flight.flightNumber }}</td>
+                    <td class="table-cell">{{ flight.origin }}</td>
+                    <td class="table-cell">{{ flight.destination }}</td>
+                    <td class="table-cell">{{ formatDate(flight.departureDate) }}</td>
+                    <td class="table-cell">{{ formatTime(flight.departureTime) }}</td>
+                    <td class="table-cell">{{ flight.flightDuration }} h</td>
+                    <td class="table-cell">{{ flight.price }} €</td>
+                    <td class="table-cell">
+                        <select  v-model="selectedSeats[flight.id]"  class="amount-select">
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                        </select>
+                    </td>
+                    <td class="table-cell">
                         <button @click="getSeatMap(flight.id)">Select</button>
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-
 </template>
 
 <script>
-import instance from '@/axiosConfig';
-
 export default {
+    props: {
+        allFlights: {
+            type: Array,
+            required: true,
+        },
+    },
     data() {
         return {
-            api: "http://localhost:8080/api/flights",
-            allFlights: [],
+            selectedSeats: {},
+        };
+    },
+    methods: {
+        formatTime(time) {
+            if (!time) return '';
+            return time.substring(0, 5);
+        },
+        formatDate(date) {
+            if (!date) return '';
+            const d = new Date(date);
+            return `${d.getDate().toString().padStart(2, '0')}-${(d.getMonth() + 1).toString().padStart(2, '0')}-${d.getFullYear()}`;
+        },
+        getSeatMap(flightId) {
+            const numberOFSeats = this.selectedSeats[flightId];
+            if (numberOFSeats) {
+                this.$router.push({ name: 'Seats', query: { flightId, numberOFSeats } });
+            } else {
+                alert('Please select the number of seats');
+            }
         }
     },
-methods: {
-    fetchFlights() {
-        instance
-            .get(`${this.api}/allFlights`)
-            .then((res) => {
-                this.allFlights = res.data;
-            })
-            .catch((error) => {
-            console.error("Error fetching all flights", error);
-          });
-    },
-    getSeatMap(flightId) {
-        this.$router.push({ name: 'Seats', query: { flightId }});
-    },
-},
-mounted() {
-    this.fetchFlights();
-    }
-}
+};
 </script>
